@@ -1,0 +1,39 @@
+#!/bin/bash
+#PBS -l nodes=1:ppn=16:xk
+#PBS -l walltime=3:00:00
+#PBS -N CIFAR10
+#PBS -e $PBS_JOBID.err
+#PBS -o $PBS_JOBID.out
+#PBS -m bea
+
+
+# If you launched the job in a directory prepared for the job to run within,
+# you'll want to cd to that directory
+# [uncomment the following line to enable this]
+cd $PBS_O_WORKDIR
+
+# Alternatively, the job script can create its own job-ID-unique directory
+# to run within.  In that case you'll need to create and populate that
+# directory with executables and perhaps inputs
+# [uncomment and customize the following lines to enable this behavior]
+# mkdir -p /scratch/sciteam/$USER/$PBS_JOBID
+# cd /scratch/sciteam/$USER/$PBS_JOBID
+# cp /scratch/test/* .
+
+#cd /scratch/sciteam/jasirign/Test/
+cd ~/scratch/CIFAR10
+
+# To add certain modules that you do not have added via ~/.modules
+. /opt/modules/default/init/bash # NEEDED to add module commands to shell
+module load bwpy
+module load cudatoolkit
+# export APRUN_XFER_LIMITS=1  # to transfer shell limits to the executable
+
+### launch the application
+### redirecting stdin and stdout if needed
+### NOTE: (the "in" file must exist for input)
+
+aprun -n 1 -N 1 CIFAR10_convNN.sh
+
+### For more information see the man page for aprun
+
